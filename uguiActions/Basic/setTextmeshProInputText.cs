@@ -23,6 +23,7 @@ namespace HutongGames.PlayMaker.Actions
         [Tooltip("Check this box to preform this action every frame.")]
         public FsmBool everyFrame;
 
+        private GameObject go;
         private TMP_InputField _inputField;
 
         public override void Reset()
@@ -34,9 +35,6 @@ namespace HutongGames.PlayMaker.Actions
 
         public override void OnEnter()
         {
-            var go = Fsm.GetOwnerDefaultTarget(gameObject);
-            _inputField = go.GetComponent<TMP_InputField>();
-
             SetMeshPro();
 
             if (!everyFrame.Value)
@@ -47,20 +45,18 @@ namespace HutongGames.PlayMaker.Actions
 
         public override void OnUpdate()
         {
-            if (everyFrame.Value)
-            {
-                SetMeshPro();
-            }
+            SetMeshPro();
         }
 
         private void SetMeshPro()
         {
-            var go = Fsm.GetOwnerDefaultTarget(gameObject);
+            go = Fsm.GetOwnerDefaultTarget(gameObject);
             if (go == null)
             {
                 return;
             }
 
+            _inputField = go.GetComponent<TMP_InputField>();
             if (_inputField == null)
             {
                 Debug.LogError("No input field component was found on " + go);
